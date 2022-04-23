@@ -1,32 +1,63 @@
 <template>
-  <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
+  <div>
+    <router-view></router-view>
+    <!-- 背景图片 -->
+    <div class="bgc">
+      <img :src="bgimg.url">
+      <!-- <img src="~@/assets/image/2.png" alt=""> -->
     </div>
-    <router-view/>
   </div>
 </template>
 
+<script>
+import {getBgimg} from '../src/api/bgimg/'
+export default {
+  data() {
+    return {
+      bgimg: {}
+    }
+  },
+  methods:{
+    init() {
+      let id = JSON.stringify(Math.ceil((Math.random()*8))) 
+      // console.log(id)
+      getBgimg(id).then((res) => {
+        // console.log(res.data)
+        this.bgimg = res.data.data[0]
+      })
+    }
+  },
+  created() {
+    this.init()
+  }
+}
+</script>
+
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
+body {
+  width: 1920px;
+  height: 100%;
+  margin: 0;
+  padding: 0;
 }
-
-#nav {
-  padding: 30px;
+.bgc {
+  position: fixed; 
+  right: 0; 
+  bottom: 0; 
+  width: 100%;
+  height: 100%; 
+  z-index: -100; 
+  background-size: cover;
 }
-
-#nav a {
-  font-weight: bold;
-  color: #2c3e50;
+.bgc img {
+  width: 100%;
+  height: 100%;
 }
-
-#nav a.router-link-exact-active {
-  color: #42b983;
+/* 隐藏页面右侧滚动条 */
+::-webkit-scrollbar {
+  width: 0 !important;
+}
+::-webkit-scrollbar {
+  width: 0 !important;height: 0;
 }
 </style>
